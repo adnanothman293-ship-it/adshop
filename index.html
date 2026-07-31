@@ -1,0 +1,2923 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أدشوب - ADShop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-bg: #eff6ff;
+            --primary-gradient: linear-gradient(135deg, #2563eb, #1d4ed8);
+            
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Tajawal', 'Segoe UI', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.6;
+            transition: background 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        
+        /* Auth */
+        #authContainer {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+            padding: 20px;
+        }
+        
+        .auth-box {
+            background: white;
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--gray-200);
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .auth-box .logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .auth-box .logo h1 {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+        
+        .auth-box .logo p {
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+        
+        .auth-box .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .auth-box label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-700);
+            margin-bottom: 4px;
+        }
+        
+        .auth-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .auth-box input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+        }
+        
+        .auth-box .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+            margin-top: 8px;
+        }
+        
+        .auth-box .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+        
+        .auth-box .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .auth-box .switch {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+        
+        .auth-box .switch a {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 700;
+        }
+        
+        .auth-box .switch a:hover {
+            text-decoration: underline;
+        }
+        
+        /* App */
+        #app {
+            display: none;
+        }
+        
+        /* Top Bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+            transition: var(--transition);
+        }
+        
+        .topbar .page-title h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--gray-800);
+        }
+        
+        .topbar .page-title p {
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+        
+        .topbar .top-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .topbar .lang-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .topbar .lang-btn:hover {
+            background: var(--primary-bg);
+            border-color: var(--primary);
+        }
+        
+        .topbar .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .topbar .theme-btn {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--gray-200);
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+        
+        .topbar .theme-btn:hover {
+            background: var(--primary-bg);
+            border-color: var(--primary);
+            transform: rotate(20deg);
+        }
+        
+        .topbar .logout-btn {
+            padding: 8px 18px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+            color: var(--gray-600);
+        }
+        
+        .topbar .logout-btn:hover {
+            background: var(--gray-100);
+            border-color: var(--gray-400);
+            color: var(--gray-700);
+        }
+        
+        .topbar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .topbar .user-info .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .topbar .user-info .badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-approved {
+            background: var(--primary-bg);
+            color: var(--primary);
+        }
+        
+        .badge-pending {
+            background: var(--gray-200);
+            color: var(--gray-600);
+        }
+        
+        .admin-badge {
+            background: #2563eb;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        
+        nav button {
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 20px;
+            background: transparent;
+            color: var(--gray-600);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+            position: relative;
+        }
+        
+        nav button:hover {
+            background: var(--primary-bg);
+            color: var(--primary);
+        }
+        
+        nav button.active {
+            background: var(--primary);
+            color: white !important;
+            box-shadow: var(--shadow);
+        }
+        
+        nav button::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        nav button.active::after {
+            width: 60%;
+        }
+        
+        /* Pages */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            cursor: default;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+        
+        .card h3 {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .card .number {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .card .number.gold { color: var(--gray-600); }
+        
+        /* Boxes */
+        .box {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        
+        .box:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .box h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        
+        /* Inputs */
+        input, select {
+            padding: 10px 14px;
+            margin: 4px 3px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            background: white;
+            color: var(--gray-800);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
+        }
+        
+        input[type="number"] { width: 100px; }
+        
+        /* Buttons */
+        .btn {
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: #16a34a; }
+        .btn-danger { background: var(--gray-600); }
+        .btn-danger:hover { background: var(--gray-700); }
+        .btn-danger-red { background: var(--danger); }
+        .btn-danger-red:hover { background: var(--danger-hover); }
+        .btn-warning { background: var(--warning); }
+        .btn-warning:hover { background: #d97706; }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th, td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--gray-200);
+            text-align: center;
+        }
+        
+        th {
+            background: var(--gray-50);
+            color: var(--gray-500);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        tr {
+            transition: var(--transition);
+        }
+        
+        tr:hover {
+            background: var(--primary-bg);
+        }
+        
+        /* Badges */
+        .badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        
+        .badge-success { background: var(--primary-bg); color: var(--primary); }
+        .badge-danger { background: #fee2e2; color: var(--danger); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        .badge-info { background: var(--primary-bg); color: var(--primary); }
+        
+        /* Pending Users */
+        .pending-user {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+            gap: 8px;
+            background: var(--primary-bg);
+            border-radius: var(--radius-sm);
+            margin: 6px 0;
+            transition: var(--transition);
+        }
+        
+        .pending-user:hover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow);
+        }
+        
+        .pending-user .info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 14px;
+        }
+        
+        .pending-user .info strong { color: var(--gray-800); }
+        .pending-user .info span { color: var(--gray-500); }
+        
+        .pending-user .actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .pending-user .actions button {
+            padding: 6px 16px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .pending-user .actions button:hover { transform: scale(1.05); }
+        .approve-btn { background: var(--success); color: white; }
+        .reject-btn { background: var(--danger); color: white; }
+        .delete-user-btn { background: var(--gray-600); color: white; }
+        .delete-user-btn:hover { background: var(--gray-700); }
+        
+        /* User Card in Admin */
+        .user-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+            gap: 8px;
+            background: white;
+            border-radius: var(--radius-sm);
+            margin: 4px 0;
+            transition: var(--transition);
+        }
+        
+        .user-card:hover {
+            background: var(--primary-bg);
+            transform: scale(1.01);
+        }
+        
+        .user-card .info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 14px;
+        }
+        
+        .user-card .info strong { color: var(--gray-800); }
+        .user-card .info span { color: var(--gray-500); }
+        
+        .user-card .actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .user-card .actions button {
+            padding: 4px 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .user-card .actions button:hover { transform: scale(1.05); }
+        
+        /* Stock Alerts - Improved */
+        .stock-alert {
+            background: #fef3c7;
+            border-right: 4px solid var(--warning);
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            transition: var(--transition);
+            animation: slideInRight 0.5s ease;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .stock-alert:hover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow);
+        }
+        
+        .stock-alert.danger {
+            background: #fee2e2;
+            border-right-color: var(--danger);
+        }
+        
+        .stock-alert .alert-text {
+            font-weight: 600;
+            color: #92400e;
+        }
+        
+        .stock-alert.danger .alert-text {
+            color: #991b1b;
+        }
+        
+        .stock-alert .alert-action {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .stock-alert .alert-action button {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .stock-alert .alert-action button:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-restock {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-restock:hover {
+            background: var(--primary-dark);
+        }
+        .btn-ignore {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+        .btn-ignore:hover {
+            background: #cbd5e1;
+        }
+        
+        /* Toast - Improved */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--gray-900);
+            color: white;
+            padding: 16px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-xl);
+            display: none;
+            z-index: 999;
+            font-weight: 600;
+            font-size: 15px;
+            max-width: 450px;
+            border-right: 4px solid var(--primary);
+            font-family: 'Tajawal', sans-serif;
+            animation: slideInRight 0.4s ease;
+        }
+        
+        #toast.error { border-right-color: var(--danger); background: #1a1a1a; }
+        #toast.success { border-right-color: var(--success); }
+        #toast.warning { border-right-color: var(--warning); }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.6);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-box {
+            background: white;
+            padding: 32px;
+            border-radius: var(--radius);
+            width: 95%;
+            max-width: 480px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-xl);
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        .modal-box h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--gray-800);
+        }
+        
+        .modal-box input {
+            width: 100%;
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        
+        /* Filter Buttons */
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+            color: var(--gray-600);
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Dark Theme */
+        body.dark {
+            background: var(--gray-900);
+        }
+        
+        body.dark .topbar,
+        body.dark nav,
+        body.dark .card,
+        body.dark .box,
+        body.dark .auth-box,
+        body.dark .modal-box,
+        body.dark .user-card {
+            background: #1e293b;
+            color: #f1f5f9;
+            border-color: #334155;
+        }
+        
+        body.dark .topbar .page-title h2,
+        body.dark .box h3,
+        body.dark .card .number,
+        body.dark .user-card .info strong {
+            color: white;
+        }
+        
+        body.dark .card h3 {
+            color: var(--gray-400);
+        }
+        
+        body.dark input,
+        body.dark select {
+            background: #334155;
+            color: white;
+            border-color: #475569;
+        }
+        
+        body.dark input:focus,
+        body.dark select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+        }
+        
+        body.dark table {
+            color: #f1f5f9;
+        }
+        
+        body.dark th {
+            background: #334155;
+            color: var(--gray-400);
+        }
+        
+        body.dark td {
+            border-color: #334155;
+        }
+        
+        body.dark tr:hover {
+            background: rgba(37,99,235,0.1);
+        }
+        
+        body.dark .badge-info {
+            background: rgba(37,99,235,0.2);
+            color: #60a5fa;
+        }
+        
+        body.dark .badge-success {
+            background: rgba(37,99,235,0.2);
+            color: #60a5fa;
+        }
+        
+        body.dark .badge-danger {
+            background: rgba(239,68,68,0.2);
+            color: #f87171;
+        }
+        
+        body.dark .badge-warning {
+            background: rgba(245,158,11,0.2);
+            color: #fbbf24;
+        }
+        
+        body.dark .pending-user {
+            background: rgba(37,99,235,0.1);
+        }
+        
+        body.dark .pending-user .info strong {
+            color: white;
+        }
+        
+        body.dark .pending-user .info span {
+            color: var(--gray-400);
+        }
+        
+        body.dark .stock-alert {
+            background: #451a1a;
+            border-right-color: var(--danger);
+        }
+        body.dark .stock-alert .alert-text {
+            color: #fca5a5;
+        }
+        body.dark .btn-ignore {
+            background: #334155;
+            color: #94a3b8;
+        }
+        body.dark .btn-ignore:hover {
+            background: #475569;
+        }
+        
+        body.dark .user-card:hover {
+            background: rgba(37,99,235,0.1);
+        }
+        
+        body.dark .filter-btn {
+            border-color: #475569;
+            color: #94a3b8;
+        }
+        
+        body.dark .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .topbar .top-actions {
+                justify-content: center;
+            }
+            
+            .topbar .user-info {
+                justify-content: center;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .auth-box {
+                padding: 24px 16px;
+            }
+            
+            .pending-user {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .pending-user .actions {
+                justify-content: center;
+            }
+            
+            .user-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .user-card .actions {
+                justify-content: center;
+            }
+            
+            nav {
+                justify-content: center;
+            }
+            
+            nav button {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+            
+            #toast {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+                max-width: none;
+                font-size: 14px;
+                padding: 14px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .box {
+                padding: 16px;
+            }
+            
+            input, select {
+                width: 100%;
+                margin: 4px 0;
+            }
+            
+            input[type="number"] {
+                width: 100%;
+            }
+        }
+        
+        /* Print */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .box { box-shadow: none !important; border: 1px solid #ddd !important; }
+        }
+        
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes pulse-red {
+            0%, 100% { background-color: #fee2e2; }
+            50% { background-color: #fecaca; }
+        }
+        .pulse-red {
+            animation: pulse-red 1.5s ease-in-out infinite;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Auth -->
+    <div id="authContainer">
+        <div class="auth-box" id="loginForm">
+            <div class="logo">
+                <h1>🛍️ أدشوب</h1>
+                <p id="authSubtitle">نظام إدارة المحلات الاحترافي</p>
+            </div>
+            <div class="form-group">
+                <label id="authEmailLabel">📧 البريد الإلكتروني</label>
+                <input type="email" id="loginEmail" placeholder="admin@example.com" value="admin@example.com">
+            </div>
+            <div class="form-group">
+                <label id="authPasswordLabel">🔑 كلمة المرور</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" value="admin123">
+            </div>
+            <button class="btn btn-primary" id="authLoginBtn" onclick="window.handleLogin()">🚀 تسجيل الدخول</button>
+            <div class="switch">
+                <span id="authNoAccount">ليس لديك حساب؟</span> <a id="authRegisterLink" onclick="window.showRegister()">إنشاء حساب جديد</a>
+            </div>
+        </div>
+        
+        <div class="auth-box" id="registerForm" style="display:none;">
+            <div class="logo">
+                <h1>📝 حساب جديد</h1>
+                <p id="authRegisterSubtitle">سجل حسابك وسيتم مراجعته من قبل المدير</p>
+            </div>
+            <div class="form-group">
+                <label id="authFullnameLabel">👤 الاسم الكامل</label>
+                <input type="text" id="regFullName" placeholder="أحمد محمد">
+            </div>
+            <div class="form-group">
+                <label id="authStorenameLabel">🏪 اسم المحل</label>
+                <input type="text" id="regStoreName" placeholder="متجر الأحلام">
+            </div>
+            <div class="form-group">
+                <label id="authEmailLabel2">📧 البريد الإلكتروني</label>
+                <input type="email" id="regEmail" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label id="authPasswordLabel2">🔑 كلمة المرور</label>
+                <input type="password" id="regPassword" placeholder="•••••••• (6 أحرف)">
+            </div>
+            <div class="form-group">
+                <label id="authConfirmLabel">🔁 تأكيد كلمة المرور</label>
+                <input type="password" id="regPasswordConfirm" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary" id="authRegisterBtn" onclick="window.handleRegister()">✅ تقديم الطلب</button>
+            <div class="switch">
+                <span id="authHaveAccount">لديك حساب؟</span> <a id="authLoginLink" onclick="window.showLogin()">تسجيل الدخول</a>
+            </div>
+        </div>
+        
+        <div class="auth-box" id="pendingMessage" style="display:none;text-align:center;">
+            <div class="logo">
+                <h1>⏳ قيد المراجعة</h1>
+            </div>
+            <p id="pendingMsg" style="color:var(--gray-600);margin:12px 0;">تم إرسال طلبك إلى المدير للموافقة عليه.</p>
+            <p id="pendingNotify" style="font-size:14px;color:var(--gray-500);">سيتم إعلامك عبر البريد الإلكتروني عند الموافقة.</p>
+            <button class="btn btn-primary" id="pendingCheckBtn" onclick="window.checkStatus()" style="margin-top:16px;">🔄 التحقق من الحالة</button>
+            <div class="switch" style="margin-top:16px;">
+                <a id="pendingBackLink" onclick="window.showLogin()">العودة لتسجيل الدخول</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- App -->
+    <div id="app">
+        <!-- Top Bar -->
+        <div class="topbar no-print">
+            <div class="page-title">
+                <h2 id="pageTitle">📊 لوحة التحكم</h2>
+                <p id="pageSubtitle" style="color:var(--gray-500);font-size:14px;">نظرة عامة على أداء متجرك</p>
+            </div>
+            <div class="top-actions">
+                <button class="lang-btn active" onclick="window.setLanguage('ar')" data-lang="ar">🇸🇦 عربي</button>
+                <button class="lang-btn" onclick="window.setLanguage('ku')" data-lang="ku">🇮🇶 کوردی</button>
+                <button class="lang-btn" onclick="window.setLanguage('en')" data-lang="en">🇬🇧 English</button>
+                <button class="theme-btn" onclick="window.toggleTheme()">🌙</button>
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar">👤</div>
+                    <span id="userName" style="font-weight:600;">مستخدم</span>
+                    <span class="admin-badge" id="adminBadge" style="display:none;">👑 مدير</span>
+                    <span class="badge badge-approved" id="statusBadge">✅ مفعّل</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn" onclick="window.logout()">🚪 خروج</button>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="no-print">
+            <button class="active" id="navDashboard" onclick="window.showPage('dashboard', this)">📊 الرئيسية</button>
+            <button id="navProducts" onclick="window.showPage('products', this)">👟 المنتجات</button>
+            <button id="navSales" onclick="window.showPage('sales', this)">🧾 المبيعات</button>
+            <button id="navCustomers" onclick="window.showPage('customers', this)">👥 العملاء</button>
+            <button id="navExpenses" onclick="window.showPage('expenses', this)">💰 المصروفات</button>
+            <button id="navReports" onclick="window.showPage('reports', this)">📈 التقارير</button>
+            <button id="adminNavBtn" onclick="window.showPage('adminPanel', this)" style="display:none;">⚙️ الإدارة</button>
+        </nav>
+        
+        <!-- Pages -->
+        <main>
+            <!-- Admin Panel -->
+            <section id="adminPanel" class="page">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;color:var(--gray-800);" id="adminTitle">⚙️ لوحة تحكم المدير</h2>
+                <div class="box" style="border:2px solid var(--primary);">
+                    <h3 style="color:var(--primary);" id="pendingRequests">⏳ طلبات الانتظار (<span id="pendingCount">0</span>)</h3>
+                    <div id="pendingUsersList"><p style="color:var(--gray-500);font-size:15px;" id="noPending">✨ لا توجد طلبات جديدة</p></div>
+                </div>
+                <div class="box">
+                    <h3 id="approvedUsers">✅ المستخدمين المصرح لهم</h3>
+                    <div id="approvedUsersList"><p style="color:var(--gray-500);font-size:15px;" id="noUsers">لا يوجد مستخدمون</p></div>
+                </div>
+                <div class="box" style="border:2px solid var(--gray-600);">
+                    <h3 style="color:var(--gray-600);" id="rejectedUsers">❌ المستخدمين المرفوضين</h3>
+                    <div id="rejectedUsersList"><p style="color:var(--gray-500);font-size:15px;" id="noUsers2">لا يوجد مستخدمون مرفوضون</p></div>
+                </div>
+            </section>
+            
+            <!-- Dashboard -->
+            <section id="dashboard" class="page active">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;color:var(--gray-800);" id="dashboardTitle">📊 لوحة التحكم</h2>
+                
+                <div id="stockAlertsContainer" style="margin-bottom:20px;"></div>
+                
+                <div class="cards">
+                    <div class="card"><h3 id="productsCountLabel">عدد المنتجات</h3><span class="number" id="dashProducts">0</span></div>
+                    <div class="card"><h3 id="stockValueLabel">قيمة المخزون</h3><span class="number gold" id="dashStock">0 د.ع</span></div>
+                    <div class="card"><h3 id="totalSalesLabel">إجمالي المبيعات</h3><span class="number" id="dashSales">0 د.ع</span></div>
+                    <div class="card"><h3 id="netProfitLabel">صافي الربح</h3><span class="number" id="dashProfit">0 د.ع</span></div>
+                </div>
+                <div class="box" id="lowStockBox" style="display:none;">
+                    <h3 style="color:var(--gray-600);" id="lowStockLabel">⚠️ منتجات منخفضة المخزون</h3>
+                    <div class="table-wrapper"><table><thead><tr><th id="productNameLabel">المنتج</th><th id="quantityLabel">الكمية</th><th>الإجراء</th></tr></thead><tbody id="lowStockTable"></tbody></table></div>
+                </div>
+                <div class="box">
+                    <h3 id="latestSalesLabel">📋 آخر المبيعات</h3>
+                    <div class="table-wrapper"><table><thead><tr><th id="productNameLabel2">المنتج</th><th id="customerLabel">العميل</th><th id="quantityLabel2">الكمية</th><th id="amountLabel">المبلغ</th></tr></thead><tbody id="latestSales"></tbody></table></div>
+                </div>
+            </section>
+            
+            <!-- Products -->
+            <section id="products" class="page">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;color:var(--gray-800);" id="productsTitle">👟 المنتجات</h2>
+                <div class="box">
+                    <h3 id="addProductLabel">➕ إضافة منتج</h3>
+                    <input id="productName" placeholder="اسم المنتج">
+                    <input id="productCategory" placeholder="الفئة">
+                    <input id="productCost" type="number" placeholder="سعر الشراء">
+                    <input id="productPrice" type="number" placeholder="سعر البيع">
+                    <input id="productQuantity" type="number" placeholder="الكمية">
+                    <input id="productReorderLevel" type="number" placeholder="حد إعادة الطلب" value="3">
+                    <button class="btn btn-success" id="addBtn" onclick="window.addProduct()">➕ إضافة</button>
+                </div>
+                <div class="box">
+                    <h3 id="productsListLabel">📋 قائمة المنتجات</h3>
+                    <input id="productSearch" placeholder="🔍 بحث..." oninput="window.displayProducts()" style="width:200px;">
+                    <button class="btn btn-danger" id="deleteSelectedBtn" onclick="window.deleteSelectedProducts()">🗑️ حذف المحدد</button>
+                    <button class="btn btn-warning" id="restockSelectedBtn" onclick="window.restockSelectedProducts()">📦 إعادة توريد</button>
+                    <div class="table-wrapper"><table><thead><tr><th>☑️</th><th id="productNameLabel3">المنتج</th><th id="categoryLabel">الفئة</th><th id="purchasePriceLabel">شراء</th><th id="sellingPriceLabel">بيع</th><th id="quantityLabel3">الكمية</th><th id="actionLabel">الإجراء</th></tr></thead><tbody id="productsTable"></tbody></table></div>
+                </div>
+            </section>
+            
+            <!-- Sales -->
+            <section id="sales" class="page">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;color:var(--gray-800);" id="salesTitle">🧾 المبيعات</h2>
+                
+                <!-- Filter Section -->
+                <div class="box">
+                    <h3 id="filterLabel">📅 فلتر المبيعات</h3>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all" onclick="window.filterSales('all', this)">📊 الكل</button>
+                        <button class="filter-btn" data-filter="day" onclick="window.filterSales('day', this)">📆 اليوم</button>
+                        <button class="filter-btn" data-filter="week" onclick="window.filterSales('week', this)">📅 هذا الأسبوع</button>
+                        <button class="filter-btn" data-filter="month" onclick="window.filterSales('month', this)">📅 هذا الشهر</button>
+                    </div>
+                </div>
+                
+                <div class="box">
+                    <h3 id="newInvoiceLabel">🧺 فاتورة جديدة</h3>
+                    <select id="saleProduct" style="min-width:180px;"></select>
+                    <input id="saleQuantity" type="number" min="1" value="1" style="width:70px;">
+                    <button class="btn btn-primary" id="addToCartBtn" onclick="window.addToCart()">➕ إضافة للسلة</button>
+                    <div class="table-wrapper"><table><thead><tr><th id="productNameLabel4">المنتج</th><th id="quantityLabel4">الكمية</th><th id="priceLabel">السعر</th><th id="totalLabel">الإجمالي</th><th id="cancelLabel">إلغاء</th></tr></thead><tbody id="cartTable"></tbody></table></div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;">
+                        <input id="customerName" placeholder="اسم العميل">
+                        <select id="paymentMethod"><option value="cash" id="cashOption">نقدي</option><option value="card" id="cardOption">بطاقة</option><option value="credit" id="creditOption">آجل</option></select>
+                    </div>
+                    <h3 style="font-size:20px;"><span id="totalLabel2">المجموع</span>: <span id="saleTotal" style="color:var(--primary);font-size:32px;">0</span> د.ع</h3>
+                    <button class="btn btn-success" id="completeInvoiceBtn" onclick="window.completeSale()">💾 إتمام الفاتورة</button>
+                </div>
+                <div class="box">
+                    <h3 id="invoiceLogLabel">📋 سجل الفواتير</h3>
+                    <button class="btn btn-primary no-print" id="printLogBtn" onclick="window.printInvoiceLog()" style="margin-bottom:12px;">🖨️ طباعة سجل الفواتير</button>
+                    <div class="table-wrapper"><table><thead><tr><th>#</th><th id="customerLabel2">العميل</th><th id="productsLabel">المنتجات</th><th id="amountLabel2">المبلغ</th><th id="paymentLabel">الدفع</th><th id="dateLabel">التاريخ</th></tr></thead><tbody id="salesTable"></tbody></table></div>
+                </div>
+            </section>
+            
+            <!-- Customers -->
+            <section id="customers" class="page">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;color:var(--gray-800);" id="customersTitle">👥 العملاء</h2>
+                <div class="box">
+                    <input id="customerInput" placeholder="اسم العميل">
+                    <input id="customerPhone" placeholder="رقم الهاتف">
+                    <button class="btn btn-success" id="addCustomerBtn" onclick="window.addCustomer()">➕ إضافة</button>
+                    <button class="btn btn-danger" id="deleteCustomerBtn" onclick="window.deleteSelectedCustomers()">🗑️ حذف</button>
+                    <div class="table-wrapper"><table><thead><tr><th>☑️</th><th id="customerNameLabel">الاسم</th><th id="phoneLabel">الهاتف</th><th id="actionLabel2">الإجراء</th></tr></thead><tbody id="customersTable"></tbody></table></div>
+                </div>
+            </section>
+            
+            <!-- Expenses -->
+            <section id="expenses" class="page">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;color:var(--gray-800);" id="expensesTitle">💰 المصروفات</h2>
+                <div class="box">
+                    <input id="expenseName" placeholder="اسم المصروف">
+                    <input id="expenseAmount" type="number" placeholder="المبلغ">
+                    <button class="btn btn-success" id="addExpenseBtn" onclick="window.addExpense()">➕ تسجيل</button>
+                    <button class="btn btn-danger" id="deleteExpenseBtn" onclick="window.deleteSelectedExpenses()">🗑️ حذف</button>
+                    <div class="table-wrapper"><table><thead><tr><th>☑️</th><th id="expenseNameLabel">المصروف</th><th id="amountLabel3">المبلغ</th><th id="actionLabel3">الإجراء</th></tr></thead><tbody id="expensesTable"></tbody></table></div>
+                </div>
+            </section>
+            
+            <!-- Reports -->
+            <section id="reports" class="page">
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:20px;color:var(--gray-800);" id="reportsTitle">📈 التقارير</h2>
+                <div class="cards">
+                    <div class="card"><h3 id="totalSalesLabel2">إجمالي المبيعات</h3><span class="number" id="reportSales">0 د.ع</span></div>
+                    <div class="card"><h3 id="costOfGoodsLabel">تكلفة البضاعة</h3><span class="number gold" id="reportCost">0 د.ع</span></div>
+                    <div class="card"><h3 id="expensesLabel2">المصروفات</h3><span class="number gold" id="reportExpenses">0 د.ع</span></div>
+                    <div class="card"><h3 id="netProfitLabel2">صافي الأرباح</h3><span class="number" id="reportProfit">0 د.ع</span></div>
+                </div>
+                <button class="btn btn-primary no-print" id="printReportBtn" onclick="window.printReport()">🖨️ طباعة التقرير</button>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-box">
+        <h3 id="editProductLabel">✏️ تعديل المنتج</h3>
+        <input id="editName" placeholder="اسم المنتج">
+        <input id="editCategory" placeholder="الفئة">
+        <input id="editCost" type="number" placeholder="سعر الشراء">
+        <input id="editPrice" type="number" placeholder="سعر البيع">
+        <input id="editQuantity" type="number" placeholder="الكمية">
+        <input id="editReorderLevel" type="number" placeholder="حد إعادة الطلب">
+        <br><br>
+        <button class="btn btn-success" id="saveBtn" onclick="window.saveEdit()">💾 حفظ</button>
+        <button class="btn btn-danger" id="cancelBtn" onclick="window.closeModal()">إلغاء</button>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB9nVBgDuNozGcUpwPvo-z7-GjmvN56xT4",
+    authDomain: "adshop-c5d1e.firebaseapp.com",
+    projectId: "adshop-c5d1e",
+    storageBucket: "adshop-c5d1e.firebasestorage.app",
+    messagingSenderId: "475359881166",
+    appId: "1:475359881166:web:9084ddc1d40b93f4deed9f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ============================================================
+// STATE
+// ============================================================
+const SUPER_ADMIN_EMAIL = "admin@example.com";
+let products = [];
+let sales = [];
+let customers = [];
+let expenses = [];
+let cart = [];
+let currentUser = null;
+let STORE_ID = null;
+let currentLang = 'ar';
+let isDark = false;
+let editingId = null;
+let lowStockAlertIds = [];
+let currentFilter = 'all';
+let filteredSales = [];
+
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+const t = {
+    ar: {
+        auth_subtitle: 'نظام إدارة المحلات الاحترافي',
+        auth_email: '📧 البريد الإلكتروني',
+        auth_password: '🔑 كلمة المرور',
+        auth_login: '🚀 تسجيل الدخول',
+        auth_no_account: 'ليس لديك حساب؟',
+        auth_register_link: 'إنشاء حساب جديد',
+        auth_register_title: '📝 حساب جديد',
+        auth_register_subtitle: 'سجل حسابك وسيتم مراجعته من قبل المدير',
+        auth_fullname: '👤 الاسم الكامل',
+        auth_storename: '🏪 اسم المحل',
+        auth_confirm: '🔁 تأكيد كلمة المرور',
+        auth_register_btn: '✅ تقديم الطلب',
+        auth_have_account: 'لديك حساب؟',
+        auth_login_link: 'تسجيل الدخول',
+        pending_title: '⏳ قيد المراجعة',
+        pending_msg: 'تم إرسال طلبك إلى المدير للموافقة عليه.',
+        pending_notify: 'سيتم إعلامك عبر البريد الإلكتروني عند الموافقة.',
+        pending_check: '🔄 التحقق من الحالة',
+        pending_back: 'العودة لتسجيل الدخول',
+        nav_dashboard: '📊 الرئيسية',
+        nav_products: '👟 المنتجات',
+        nav_sales: '🧾 المبيعات',
+        nav_customers: '👥 العملاء',
+        nav_expenses: '💰 المصروفات',
+        nav_reports: '📈 التقارير',
+        nav_admin: '⚙️ الإدارة',
+        dashboard_title: '📊 لوحة التحكم',
+        products_count: 'عدد المنتجات',
+        stock_value: 'قيمة المخزون',
+        total_sales: 'إجمالي المبيعات',
+        net_profit: 'صافي الربح',
+        low_stock: '⚠️ منتجات منخفضة المخزون',
+        latest_sales: '📋 آخر المبيعات',
+        product_name: 'المنتج',
+        quantity: 'الكمية',
+        customer: 'العميل',
+        amount: 'المبلغ',
+        date: 'التاريخ',
+        payment: 'الدفع',
+        products: 'المنتجات',
+        add_product: '➕ إضافة منتج',
+        add_btn: '➕ إضافة',
+        products_list: '📋 قائمة المنتجات',
+        delete_selected: '🗑️ حذف المحدد',
+        category: 'الفئة',
+        purchase_price: 'شراء',
+        selling_price: 'بيع',
+        action: 'الإجراء',
+        search: '🔍 بحث...',
+        product_name_placeholder: 'اسم المنتج',
+        category_placeholder: 'الفئة',
+        purchase_price_placeholder: 'سعر الشراء',
+        selling_price_placeholder: 'سعر البيع',
+        quantity_placeholder: 'الكمية',
+        reorder_level: 'حد إعادة الطلب',
+        edit_product: '✏️ تعديل المنتج',
+        save: '💾 حفظ',
+        cancel: 'إلغاء',
+        new_invoice: '🧺 فاتورة جديدة',
+        add_to_cart: '➕ إضافة للسلة',
+        price: 'السعر',
+        total: 'الإجمالي',
+        cash: 'نقدي',
+        card: 'بطاقة',
+        credit: 'آجل',
+        complete_invoice: '💾 إتمام الفاتورة',
+        invoice_log: '📋 سجل الفواتير',
+        print_log: '🖨️ طباعة سجل الفواتير',
+        customer_name: 'الاسم',
+        phone: 'الهاتف',
+        phone_placeholder: 'رقم الهاتف',
+        customer_name_placeholder: 'اسم العميل',
+        expense_name: 'المصروف',
+        expense_name_placeholder: 'اسم المصروف',
+        amount_placeholder: 'المبلغ',
+        cost_of_goods: 'تكلفة البضاعة',
+        print_report: '🖨️ طباعة التقرير',
+        admin_title: '⚙️ لوحة تحكم المدير',
+        pending_requests: '⏳ طلبات الانتظار',
+        no_pending: '✨ لا توجد طلبات جديدة',
+        approved_users: '✅ المستخدمين المصرح لهم',
+        rejected_users: '❌ المستخدمين المرفوضين',
+        no_users: 'لا يوجد مستخدمون',
+        dashboard_subtitle: 'نظرة عامة على أداء متجرك',
+        user: 'مستخدم',
+        active: 'مفعّل',
+        logout: '🚪 خروج',
+        no_data: 'لا توجد بيانات',
+        restock: '📦 إعادة توريد',
+        no_stock_alerts: '✅ جميع المنتجات متوفرة',
+        stock_alert_title: '⚠️ تنبيه المخزون المنخفض',
+        product_needs_restock: 'بحاجة لإعادة توريد',
+        restock_now: 'توريد الآن',
+        ignore: 'تجاهل',
+        delete_user: '🗑️ حذف',
+        confirm_delete: 'هل أنت متأكد من حذف هذا المستخدم؟',
+        filter_all: '📊 الكل',
+        filter_day: '📆 اليوم',
+        filter_week: '📅 هذا الأسبوع',
+        filter_month: '📅 هذا الشهر',
+        filter_label: '📅 فلتر المبيعات'
+    },
+    ku: {
+        auth_subtitle: 'سیستەمی بەڕێوەبردنی فرۆشگا',
+        auth_email: '📧 ئیمەیڵ',
+        auth_password: '🔑 وشەی نهێنی',
+        auth_login: '🚀 چوونەژوورەوە',
+        auth_no_account: 'هەژمارت نییە؟',
+        auth_register_link: 'دروستکردنی هەژمارێکی نوێ',
+        auth_register_title: '📝 هەژمارێکی نوێ',
+        auth_register_subtitle: 'هەژمارت تۆماربکە و چاوەڕوانی پەسەندکردنی بەڕێوەبەر بکە',
+        auth_fullname: '👤 ناوی تەواو',
+        auth_storename: '🏪 ناوی فرۆشگا',
+        auth_confirm: '🔁 پشتڕاستکردنەوەی وشەی نهێنی',
+        auth_register_btn: '✅ ناردنی داواکاری',
+        auth_have_account: 'هەژمارت هەیە؟',
+        auth_login_link: 'چوونەژوورەوە',
+        pending_title: '⏳ چاوەڕوانی پێداچوونەوە',
+        pending_msg: 'داواکارییەکەت نێردرا بۆ بەڕێوەبەر بۆ پەسەندکردن.',
+        pending_notify: 'کاتێک پەسەند بکرێت، ڕاگەیەندراو دەبیت.',
+        pending_check: '🔄 پشکنینی دۆخ',
+        pending_back: 'گەڕانەوە بۆ چوونەژوورەوە',
+        nav_dashboard: '📊 پەنجەرەی سەرەکی',
+        nav_products: '👟 کاڵاکان',
+        nav_sales: '🧾 فرۆشتن',
+        nav_customers: '👥 کڕیاران',
+        nav_expenses: '💰 خەرجییەکان',
+        nav_reports: '📈 ڕاپۆرتەکان',
+        nav_admin: '⚙️ بەڕێوەبردنی بەکارهێنەران',
+        dashboard_title: '📊 پەنجەرەی سەرەکی',
+        products_count: 'ژمارەی کاڵاکان',
+        stock_value: 'نرخی کۆگا',
+        total_sales: 'کۆی فرۆشتن',
+        net_profit: 'قازانجی خالی',
+        low_stock: '⚠️ کاڵای کەم',
+        latest_sales: '📋 دوایین فرۆشتن',
+        product_name: 'کاڵا',
+        quantity: 'بڕ',
+        customer: 'کڕیار',
+        amount: 'بڕی پارە',
+        date: 'بەروار',
+        payment: 'پارەدان',
+        products: 'کاڵاکان',
+        add_product: '➕ زیادکردنی کاڵا',
+        add_btn: '➕ زیادکردن',
+        products_list: '📋 لیستی کاڵاکان',
+        delete_selected: '🗑️ سڕینەوەی دیاریکراوەکان',
+        category: 'پۆل',
+        purchase_price: 'کڕین',
+        selling_price: 'فرۆشتن',
+        action: 'کردار',
+        search: '🔍 گەڕان...',
+        product_name_placeholder: 'ناوی کاڵا',
+        category_placeholder: 'پۆل',
+        purchase_price_placeholder: 'نرخی کڕین',
+        selling_price_placeholder: 'نرخی فرۆشتن',
+        quantity_placeholder: 'بڕ',
+        reorder_level: 'ئاستی داواکردنەوە',
+        edit_product: '✏️ دەستکاری کاڵا',
+        save: '💾 پاشەکەوت',
+        cancel: 'پەشیمانبوونەوە',
+        new_invoice: '🧺 فاکتوری نوێ',
+        add_to_cart: '➕ زیادکردن بۆ سەبەتە',
+        price: 'نرخ',
+        total: 'کۆی گشتی',
+        cash: 'نەقدی',
+        card: 'کارت',
+        credit: 'قەرز',
+        complete_invoice: '💾 تەواوکردنی فاکتور',
+        invoice_log: '📋 تۆماری فاکتورەکان',
+        print_log: '🖨️ چاپی تۆماری فاکتورەکان',
+        customer_name: 'ناو',
+        phone: 'تەلەفۆن',
+        phone_placeholder: 'ژمارەی تەلەفۆن',
+        customer_name_placeholder: 'ناوی کڕیار',
+        expense_name: 'خەرجی',
+        expense_name_placeholder: 'ناوی خەرجی',
+        amount_placeholder: 'بڕی پارە',
+        cost_of_goods: 'نرخی کاڵا',
+        print_report: '🖨️ چاپی ڕاپۆرت',
+        admin_title: '⚙️ پەنجەرەی بەڕێوەبەر',
+        pending_requests: '⏳ داواکارییە چاوەڕوانەکان',
+        no_pending: '✨ هیچ داواکارییەکی نوێ نییە',
+        approved_users: '✅ بەکارهێنەرانی پەسەندکراو',
+        rejected_users: '❌ بەکارهێنەرانی ڕەتکراو',
+        no_users: 'هیچ بەکارهێنەرێک نییە',
+        dashboard_subtitle: 'نەگا بەرپرسیاری فرۆشگای خۆت',
+        user: 'بەکارهێنەر',
+        active: 'چالاک',
+        logout: '🚪 دەرچوون',
+        no_data: 'هیچ داتایەک نییە',
+        restock: '📦 پڕکردنەوە',
+        no_stock_alerts: '✅ هەموو کاڵاکان بەردەستن',
+        stock_alert_title: '⚠️ ئاگاداری کەمی کاڵا',
+        product_needs_restock: 'پێویستی بە پڕکردنەوە هەیە',
+        restock_now: 'پڕکردنەوە',
+        ignore: 'پشتگوێخستن',
+        delete_user: '🗑️ سڕینەوە',
+        confirm_delete: 'دڵنیای لە سڕینەوەی ئەم بەکارهێنەرە؟',
+        filter_all: '📊 هەموو',
+        filter_day: '📆 ئەمڕۆ',
+        filter_week: '📅 ئەم هەفتەیە',
+        filter_month: '📅 ئەم مانگە',
+        filter_label: '📅 فلتری فرۆشتن'
+    },
+    en: {
+        auth_subtitle: 'Store Management System',
+        auth_email: '📧 Email',
+        auth_password: '🔑 Password',
+        auth_login: '🚀 Login',
+        auth_no_account: "Don't have an account?",
+        auth_register_link: 'Create New Account',
+        auth_register_title: '📝 New Account',
+        auth_register_subtitle: 'Register and wait for admin approval',
+        auth_fullname: '👤 Full Name',
+        auth_storename: '🏪 Store Name',
+        auth_confirm: '🔁 Confirm Password',
+        auth_register_btn: '✅ Submit Request',
+        auth_have_account: 'Already have an account?',
+        auth_login_link: 'Login',
+        pending_title: '⏳ Pending Review',
+        pending_msg: 'Your request has been sent to the admin for approval.',
+        pending_notify: 'You will be notified via email when approved.',
+        pending_check: '🔄 Check Status',
+        pending_back: 'Back to Login',
+        nav_dashboard: '📊 Dashboard',
+        nav_products: '👟 Products',
+        nav_sales: '🧾 Sales',
+        nav_customers: '👥 Customers',
+        nav_expenses: '💰 Expenses',
+        nav_reports: '📈 Reports',
+        nav_admin: '⚙️ Management',
+        dashboard_title: '📊 Dashboard',
+        products_count: 'Products Count',
+        stock_value: 'Stock Value',
+        total_sales: 'Total Sales',
+        net_profit: 'Net Profit',
+        low_stock: '⚠️ Low Stock Products',
+        latest_sales: '📋 Latest Sales',
+        product_name: 'Product',
+        quantity: 'Qty',
+        customer: 'Customer',
+        amount: 'Amount',
+        date: 'Date',
+        payment: 'Payment',
+        products: 'Products',
+        add_product: '➕ Add Product',
+        add_btn: '➕ Add',
+        products_list: '📋 Products List',
+        delete_selected: '🗑️ Delete Selected',
+        category: 'Category',
+        purchase_price: 'Purchase',
+        selling_price: 'Sell',
+        action: 'Action',
+        search: '🔍 Search...',
+        product_name_placeholder: 'Product Name',
+        category_placeholder: 'Category',
+        purchase_price_placeholder: 'Purchase Price',
+        selling_price_placeholder: 'Selling Price',
+        quantity_placeholder: 'Quantity',
+        reorder_level: 'Reorder Level',
+        edit_product: '✏️ Edit Product',
+        save: '💾 Save',
+        cancel: 'Cancel',
+        new_invoice: '🧺 New Invoice',
+        add_to_cart: '➕ Add to Cart',
+        price: 'Price',
+        total: 'Total',
+        cash: 'Cash',
+        card: 'Card',
+        credit: 'Credit',
+        complete_invoice: '💾 Complete Invoice',
+        invoice_log: '📋 Invoice Log',
+        print_log: '🖨️ Print Invoice Log',
+        customer_name: 'Name',
+        phone: 'Phone',
+        phone_placeholder: 'Phone Number',
+        customer_name_placeholder: 'Customer Name',
+        expense_name: 'Expense',
+        expense_name_placeholder: 'Expense Name',
+        amount_placeholder: 'Amount',
+        cost_of_goods: 'Cost of Goods',
+        print_report: '🖨️ Print Report',
+        admin_title: '⚙️ Admin Dashboard',
+        pending_requests: '⏳ Pending Requests',
+        no_pending: '✨ No new requests',
+        approved_users: '✅ Approved Users',
+        rejected_users: '❌ Rejected Users',
+        no_users: 'No users',
+        dashboard_subtitle: 'Overview of your store performance',
+        user: 'User',
+        active: 'Active',
+        logout: '🚪 Logout',
+        no_data: 'No data available',
+        restock: '📦 Restock',
+        no_stock_alerts: '✅ All products in stock',
+        stock_alert_title: '⚠️ Low Stock Alert',
+        product_needs_restock: 'Needs restocking',
+        restock_now: 'Restock Now',
+        ignore: 'Ignore',
+        delete_user: '🗑️ Delete',
+        confirm_delete: 'Are you sure you want to delete this user?',
+        filter_all: '📊 All',
+        filter_day: '📆 Today',
+        filter_week: '📅 This Week',
+        filter_month: '📅 This Month',
+        filter_label: '📅 Sales Filter'
+    }
+};
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function getText(key) {
+    return t[currentLang]?.[key] || t['ar'][key] || key;
+}
+
+function showToast(msg, type = 'success') {
+    const el = document.getElementById("toast");
+    el.innerText = msg;
+    el.style.display = "block";
+    el.className = type;
+    clearTimeout(el._timeout);
+    el._timeout = setTimeout(() => { 
+        el.style.opacity = '0';
+        setTimeout(() => { el.style.display = "none"; el.style.opacity = '1'; }, 300);
+    }, 3500);
+}
+
+// ============================================================
+// LANGUAGE FUNCTIONS
+// ============================================================
+window.setLanguage = function(lang) {
+    currentLang = lang;
+    localStorage.setItem('adshop_lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    updateUITexts();
+};
+
+function loadLanguage() {
+    const saved = localStorage.getItem('adshop_lang') || 'ar';
+    setLanguage(saved);
+}
+
+function updateUITexts() {
+    document.getElementById('authSubtitle').textContent = getText('auth_subtitle');
+    document.getElementById('authEmailLabel').textContent = getText('auth_email');
+    document.getElementById('authPasswordLabel').textContent = getText('auth_password');
+    document.getElementById('authLoginBtn').textContent = getText('auth_login');
+    document.getElementById('authNoAccount').textContent = getText('auth_no_account');
+    document.getElementById('authRegisterLink').textContent = getText('auth_register_link');
+    document.getElementById('authRegisterSubtitle').textContent = getText('auth_register_subtitle');
+    document.getElementById('authFullnameLabel').textContent = getText('auth_fullname');
+    document.getElementById('authStorenameLabel').textContent = getText('auth_storename');
+    document.getElementById('authEmailLabel2').textContent = getText('auth_email');
+    document.getElementById('authPasswordLabel2').textContent = getText('auth_password');
+    document.getElementById('authConfirmLabel').textContent = getText('auth_confirm');
+    document.getElementById('authRegisterBtn').textContent = getText('auth_register_btn');
+    document.getElementById('authHaveAccount').textContent = getText('auth_have_account');
+    document.getElementById('authLoginLink').textContent = getText('auth_login_link');
+    document.getElementById('pendingMsg').textContent = getText('pending_msg');
+    document.getElementById('pendingNotify').textContent = getText('pending_notify');
+    document.getElementById('pendingCheckBtn').textContent = getText('pending_check');
+    document.getElementById('pendingBackLink').textContent = getText('pending_back');
+    
+    document.getElementById('navDashboard').innerHTML = getText('nav_dashboard');
+    document.getElementById('navProducts').innerHTML = getText('nav_products');
+    document.getElementById('navSales').innerHTML = getText('nav_sales');
+    document.getElementById('navCustomers').innerHTML = getText('nav_customers');
+    document.getElementById('navExpenses').innerHTML = getText('nav_expenses');
+    document.getElementById('navReports').innerHTML = getText('nav_reports');
+    document.getElementById('adminNavBtn').innerHTML = getText('nav_admin');
+    
+    document.getElementById('dashboardTitle').textContent = getText('dashboard_title');
+    document.getElementById('productsCountLabel').textContent = getText('products_count');
+    document.getElementById('stockValueLabel').textContent = getText('stock_value');
+    document.getElementById('totalSalesLabel').textContent = getText('total_sales');
+    document.getElementById('netProfitLabel').textContent = getText('net_profit');
+    document.getElementById('lowStockLabel').textContent = getText('low_stock');
+    document.getElementById('productNameLabel').textContent = getText('product_name');
+    document.getElementById('quantityLabel').textContent = getText('quantity');
+    document.getElementById('latestSalesLabel').textContent = getText('latest_sales');
+    document.getElementById('productNameLabel2').textContent = getText('product_name');
+    document.getElementById('customerLabel').textContent = getText('customer');
+    document.getElementById('quantityLabel2').textContent = getText('quantity');
+    document.getElementById('amountLabel').textContent = getText('amount');
+    document.getElementById('pageSubtitle').textContent = getText('dashboard_subtitle');
+    
+    document.getElementById('productsTitle').textContent = getText('nav_products');
+    document.getElementById('addProductLabel').textContent = getText('add_product');
+    document.getElementById('addBtn').textContent = getText('add_btn');
+    document.getElementById('productsListLabel').textContent = getText('products_list');
+    document.getElementById('deleteSelectedBtn').textContent = getText('delete_selected');
+    document.getElementById('productNameLabel3').textContent = getText('product_name');
+    document.getElementById('categoryLabel').textContent = getText('category');
+    document.getElementById('purchasePriceLabel').textContent = getText('purchase_price');
+    document.getElementById('sellingPriceLabel').textContent = getText('selling_price');
+    document.getElementById('quantityLabel3').textContent = getText('quantity');
+    document.getElementById('actionLabel').textContent = getText('action');
+    document.getElementById('productSearch').placeholder = getText('search');
+    document.getElementById('productName').placeholder = getText('product_name_placeholder');
+    document.getElementById('productCategory').placeholder = getText('category_placeholder');
+    document.getElementById('productCost').placeholder = getText('purchase_price_placeholder');
+    document.getElementById('productPrice').placeholder = getText('selling_price_placeholder');
+    document.getElementById('productQuantity').placeholder = getText('quantity_placeholder');
+    document.getElementById('productReorderLevel').placeholder = getText('reorder_level');
+    document.getElementById('restockSelectedBtn').textContent = getText('restock');
+    
+    document.getElementById('salesTitle').textContent = getText('nav_sales');
+    document.getElementById('filterLabel').textContent = getText('filter_label');
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        const filter = btn.dataset.filter;
+        const labels = {
+            all: getText('filter_all'),
+            day: getText('filter_day'),
+            week: getText('filter_week'),
+            month: getText('filter_month')
+        };
+        btn.textContent = labels[filter] || filter;
+    });
+    document.getElementById('newInvoiceLabel').textContent = getText('new_invoice');
+    document.getElementById('addToCartBtn').textContent = getText('add_to_cart');
+    document.getElementById('productNameLabel4').textContent = getText('product_name');
+    document.getElementById('quantityLabel4').textContent = getText('quantity');
+    document.getElementById('priceLabel').textContent = getText('price');
+    document.getElementById('totalLabel').textContent = getText('total');
+    document.getElementById('cancelLabel').textContent = getText('cancel');
+    document.getElementById('totalLabel2').textContent = getText('total');
+    document.getElementById('completeInvoiceBtn').textContent = getText('complete_invoice');
+    document.getElementById('invoiceLogLabel').textContent = getText('invoice_log');
+    document.getElementById('printLogBtn').textContent = getText('print_log');
+    document.getElementById('customerLabel2').textContent = getText('customer');
+    document.getElementById('productsLabel').textContent = getText('products');
+    document.getElementById('amountLabel2').textContent = getText('amount');
+    document.getElementById('paymentLabel').textContent = getText('payment');
+    document.getElementById('dateLabel').textContent = getText('date');
+    document.getElementById('customerName').placeholder = getText('customer_name_placeholder');
+    document.getElementById('cashOption').textContent = getText('cash');
+    document.getElementById('cardOption').textContent = getText('card');
+    document.getElementById('creditOption').textContent = getText('credit');
+    
+    document.getElementById('customersTitle').textContent = getText('nav_customers');
+    document.getElementById('addCustomerBtn').textContent = getText('add_btn');
+    document.getElementById('deleteCustomerBtn').textContent = getText('delete_selected');
+    document.getElementById('customerNameLabel').textContent = getText('customer_name');
+    document.getElementById('phoneLabel').textContent = getText('phone');
+    document.getElementById('actionLabel2').textContent = getText('action');
+    document.getElementById('customerInput').placeholder = getText('customer_name_placeholder');
+    document.getElementById('customerPhone').placeholder = getText('phone_placeholder');
+    
+    document.getElementById('expensesTitle').textContent = getText('nav_expenses');
+    document.getElementById('addExpenseBtn').textContent = getText('add_btn');
+    document.getElementById('deleteExpenseBtn').textContent = getText('delete_selected');
+    document.getElementById('expenseNameLabel').textContent = getText('expense_name');
+    document.getElementById('amountLabel3').textContent = getText('amount');
+    document.getElementById('actionLabel3').textContent = getText('action');
+    document.getElementById('expenseName').placeholder = getText('expense_name_placeholder');
+    document.getElementById('expenseAmount').placeholder = getText('amount_placeholder');
+    
+    document.getElementById('reportsTitle').textContent = getText('nav_reports');
+    document.getElementById('totalSalesLabel2').textContent = getText('total_sales');
+    document.getElementById('costOfGoodsLabel').textContent = getText('cost_of_goods');
+    document.getElementById('expensesLabel2').textContent = getText('nav_expenses');
+    document.getElementById('netProfitLabel2').textContent = getText('net_profit');
+    document.getElementById('printReportBtn').textContent = getText('print_report');
+    
+    document.getElementById('adminTitle').textContent = getText('admin_title');
+    document.getElementById('pendingRequests').innerHTML = getText('pending_requests') + ' (<span id="pendingCount">0</span>)';
+    document.getElementById('noPending').textContent = getText('no_pending');
+    document.getElementById('approvedUsers').textContent = getText('approved_users');
+    document.getElementById('noUsers').textContent = getText('no_users');
+    document.getElementById('rejectedUsers').textContent = getText('rejected_users');
+    document.getElementById('noUsers2').textContent = getText('no_users');
+    
+    document.getElementById('editProductLabel').textContent = getText('edit_product');
+    document.getElementById('editName').placeholder = getText('product_name_placeholder');
+    document.getElementById('editCategory').placeholder = getText('category_placeholder');
+    document.getElementById('editCost').placeholder = getText('purchase_price_placeholder');
+    document.getElementById('editPrice').placeholder = getText('selling_price_placeholder');
+    document.getElementById('editQuantity').placeholder = getText('quantity_placeholder');
+    document.getElementById('editReorderLevel').placeholder = getText('reorder_level');
+    document.getElementById('saveBtn').textContent = getText('save');
+    document.getElementById('cancelBtn').textContent = getText('cancel');
+    
+    document.getElementById('logoutBtn').textContent = getText('logout');
+    document.getElementById('statusBadge').textContent = '✅ ' + getText('active');
+    
+    const activePage = document.querySelector('.page.active');
+    if (activePage) {
+        const id = activePage.id;
+        const titles = {
+            dashboard: getText('dashboard_title'),
+            products: getText('nav_products'),
+            sales: getText('nav_sales'),
+            customers: getText('nav_customers'),
+            expenses: getText('nav_expenses'),
+            reports: getText('nav_reports'),
+            adminPanel: getText('admin_title')
+        };
+        document.getElementById('pageTitle').textContent = titles[id] || getText('dashboard_title');
+    }
+}
+
+// ============================================================
+// THEME
+// ============================================================
+window.toggleTheme = function() {
+    isDark = !isDark;
+    document.body.classList.toggle('dark', isDark);
+    document.querySelector('.theme-btn').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('adshop_theme', isDark ? 'dark' : 'light');
+};
+
+function loadTheme() {
+    const saved = localStorage.getItem('adshop_theme');
+    if (saved === 'dark') {
+        isDark = true;
+        document.body.classList.add('dark');
+        document.querySelector('.theme-btn').textContent = '☀️';
+    }
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+window.showPage = function(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    const page = document.getElementById(id);
+    if (page) page.classList.add('active');
+    if (btn) btn.classList.add('active');
+    
+    const titles = {
+        dashboard: getText('dashboard_title'),
+        products: getText('nav_products'),
+        sales: getText('nav_sales'),
+        customers: getText('nav_customers'),
+        expenses: getText('nav_expenses'),
+        reports: getText('nav_reports'),
+        adminPanel: getText('admin_title')
+    };
+    document.getElementById('pageTitle').textContent = titles[id] || getText('dashboard_title');
+    document.getElementById('pageSubtitle').textContent = getText('dashboard_subtitle');
+    
+    if (id === 'adminPanel') loadPendingUsers();
+    if (id === 'dashboard') renderStockAlerts();
+    if (id === 'sales') filterSales(currentFilter);
+};
+
+// ============================================================
+// AUTH
+// ============================================================
+window.showRegister = function() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+    document.getElementById('pendingMessage').style.display = 'none';
+};
+
+window.showLogin = function() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('pendingMessage').style.display = 'none';
+};
+
+window.handleRegister = async function() {
+    const fullName = document.getElementById('regFullName').value.trim();
+    const storeName = document.getElementById('regStoreName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const confirm = document.getElementById('regPasswordConfirm').value;
+
+    if (!fullName || !storeName || !email || !password || !confirm) {
+        return showToast('⚠️ يرجى ملء جميع الحقول', 'error');
+    }
+    if (password.length < 6) return showToast('⚠️ كلمة المرور 6 أحرف على الأقل', 'error');
+    if (password !== confirm) return showToast('⚠️ كلمتا المرور غير متطابقتين', 'error');
+
+    try {
+        const existing = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
+        if (!existing.empty) return showToast('⚠️ هذا البريد مسجل مسبقاً', 'error');
+
+        let status = 'pending';
+        let role = 'user';
+        if (email === SUPER_ADMIN_EMAIL) {
+            status = 'approved';
+            role = 'admin';
+        }
+
+        const userData = {
+            fullName, storeName, email, password,
+            status: status,
+            role: role,
+            branch: storeName.replace(/\s/g, '_').toLowerCase() + '_' + Date.now(),
+            createdAt: new Date().toISOString()
+        };
+        const docRef = await addDoc(collection(db, 'users'), userData);
+
+        if (email === SUPER_ADMIN_EMAIL) {
+            showToast('✅ تم إنشاء حساب المدير بنجاح!', 'success');
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        } else {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('pendingMessage').style.display = 'block';
+            localStorage.setItem('adshop_pending_id', docRef.id);
+            showToast('✅ تم إرسال طلبك، انتظر موافقة المدير', 'success');
+        }
+    } catch (e) {
+        console.error('Registration error:', e);
+        showToast('⚠️ حدث خطأ في التسجيل', 'error');
+    }
+};
+
+window.checkStatus = async function() {
+    const userId = localStorage.getItem('adshop_pending_id');
+    if (!userId) return showToast('⚠️ لا يوجد طلب قيد الانتظار', 'error');
+    try {
+        const docSnap = await getDoc(doc(db, 'users', userId));
+        if (!docSnap.exists()) return showToast('⚠️ لم يتم العثور على الطلب', 'error');
+        const user = docSnap.data();
+        if (user.status === 'approved') {
+            showToast('✅ تم الموافقة على حسابك! يمكنك تسجيل الدخول الآن', 'success');
+            document.getElementById('pendingMessage').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            localStorage.removeItem('adshop_pending_id');
+        } else if (user.status === 'rejected') {
+            showToast('❌ للأسف تم رفض طلبك', 'error');
+            localStorage.removeItem('adshop_pending_id');
+        } else {
+            showToast('⏳ لا يزال طلبك قيد المراجعة', 'warning');
+        }
+    } catch (e) {
+        console.error('Status check error:', e);
+        showToast('⚠️ حدث خطأ في التحقق', 'error');
+    }
+};
+
+window.handleLogin = async function() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    if (!email || !password) return showToast('⚠️ أدخل البريد وكلمة المرور', 'error');
+
+    try {
+        const q = query(collection(db, 'users'), where('email', '==', email));
+        const snap = await getDocs(q);
+        if (snap.empty) {
+            if (email === SUPER_ADMIN_EMAIL) {
+                return showToast('⚠️ يرجى إنشاء حساب المدير أولاً عن طريق التسجيل', 'error');
+            }
+            return showToast('⚠️ البريد الإلكتروني غير مسجل', 'error');
+        }
+
+        const doc = snap.docs[0];
+        const user = { id: doc.id, ...doc.data() };
+
+        if (user.password !== password) return showToast('⚠️ كلمة المرور غير صحيحة', 'error');
+        if (user.status === 'pending') return showToast('⏳ حسابك قيد المراجعة، انتظر الموافقة', 'warning');
+        if (user.status === 'rejected') return showToast('❌ تم رفض حسابك، تواصل مع المدير', 'error');
+
+        currentUser = user;
+        STORE_ID = user.branch;
+        localStorage.setItem('adshop_user_id', user.id);
+        localStorage.setItem('adshop_store_id', user.branch);
+
+        document.getElementById('authContainer').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+
+        document.getElementById('userName').textContent = user.fullName;
+        document.getElementById('userAvatar').textContent = user.fullName.charAt(0);
+
+        const isAdmin = user.email === SUPER_ADMIN_EMAIL || user.role === 'admin';
+        document.getElementById('adminBadge').style.display = isAdmin ? 'inline' : 'none';
+        document.getElementById('adminNavBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+
+        if (isAdmin) {
+            loadPendingUsers();
+        }
+
+        await loadData();
+        updateUITexts();
+        renderStockAlerts();
+        showToast(`👋 مرحباً ${user.fullName}`, 'success');
+
+    } catch (e) {
+        console.error('Login error:', e);
+        showToast('⚠️ حدث خطأ في تسجيل الدخول', 'error');
+    }
+};
+
+window.logout = function() {
+    if (!confirm('تسجيل الخروج؟')) return;
+    currentUser = null;
+    localStorage.removeItem('adshop_user_id');
+    localStorage.removeItem('adshop_store_id');
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('authContainer').style.display = 'block';
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('pendingMessage').style.display = 'none';
+    showToast('👋 تم تسجيل الخروج', 'success');
+};
+
+// ============================================================
+// ADMIN - DELETE USER
+// ============================================================
+window.deleteUser = async function(userId, userName) {
+    if (userId === currentUser?.id) {
+        return showToast('⚠️ لا يمكنك حذف حسابك الخاص', 'error');
+    }
+    
+    if (!confirm(getText('confirm_delete') + ` "${userName}"؟`)) return;
+    
+    try {
+        await deleteDoc(doc(db, 'users', userId));
+        showToast(`✅ تم حذف المستخدم ${userName}`, 'success');
+        loadPendingUsers();
+    } catch (e) {
+        console.error('Delete user error:', e);
+        showToast('⚠️ حدث خطأ في حذف المستخدم', 'error');
+    }
+};
+
+// ============================================================
+// ADMIN - LOAD USERS
+// ============================================================
+async function loadPendingUsers() {
+    try {
+        const q = query(collection(db, 'users'), where('status', '==', 'pending'));
+        const snap = await getDocs(q);
+        const pending = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById('pendingCount').textContent = pending.length;
+        
+        const container = document.getElementById('pendingUsersList');
+        if (pending.length === 0) {
+            container.innerHTML = `<p style="color:var(--gray-500);font-size:15px;">${getText('no_pending')}</p>`;
+        } else {
+            container.innerHTML = pending.map(u => `
+                <div class="pending-user">
+                    <div class="info">
+                        <strong>${u.fullName}</strong>
+                        <span>🏪 ${u.storeName}</span>
+                        <span>📧 ${u.email}</span>
+                        <span style="font-size:12px;color:var(--gray-500);">${new Date(u.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <div class="actions">
+                        <button class="approve-btn" onclick="window.approveUser('${u.id}')">✅ موافقة</button>
+                        <button class="reject-btn" onclick="window.rejectUser('${u.id}')">❌ رفض</button>
+                        <button class="delete-user-btn" onclick="window.deleteUser('${u.id}', '${u.fullName}')">🗑️ حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        const q2 = query(collection(db, 'users'), where('status', '==', 'approved'));
+        const snap2 = await getDocs(q2);
+        const approved = snap2.docs.map(d => ({ id: d.id, ...d.data() }));
+        
+        const approvedContainer = document.getElementById('approvedUsersList');
+        if (approved.length === 0) {
+            approvedContainer.innerHTML = `<p style="color:var(--gray-500);font-size:15px;">${getText('no_users')}</p>`;
+        } else {
+            approvedContainer.innerHTML = approved.map(u => `
+                <div class="user-card">
+                    <div class="info">
+                        <strong>${u.fullName}</strong>
+                        <span>🏪 ${u.storeName}</span>
+                        <span>📧 ${u.email}</span>
+                        <span style="font-size:12px;color:var(--gray-500);">
+                            ${u.role === 'admin' ? '👑 مدير' : '👤 مستخدم'}
+                        </span>
+                        <span style="font-size:12px;color:var(--gray-500);">${new Date(u.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <div class="actions">
+                        ${u.email !== SUPER_ADMIN_EMAIL ? `
+                            <button class="delete-user-btn" onclick="window.deleteUser('${u.id}', '${u.fullName}')">🗑️ حذف</button>
+                        ` : `
+                            <span style="color:var(--gray-400);font-size:12px;">👑 المدير الرئيسي</span>
+                        `}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        const q3 = query(collection(db, 'users'), where('status', '==', 'rejected'));
+        const snap3 = await getDocs(q3);
+        const rejected = snap3.docs.map(d => ({ id: d.id, ...d.data() }));
+        
+        const rejectedContainer = document.getElementById('rejectedUsersList');
+        if (rejected.length === 0) {
+            rejectedContainer.innerHTML = `<p style="color:var(--gray-500);font-size:15px;">${getText('no_users')}</p>`;
+        } else {
+            rejectedContainer.innerHTML = rejected.map(u => `
+                <div class="user-card">
+                    <div class="info">
+                        <strong>${u.fullName}</strong>
+                        <span>🏪 ${u.storeName}</span>
+                        <span>📧 ${u.email}</span>
+                        <span style="font-size:12px;color:var(--gray-500);">${new Date(u.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <div class="actions">
+                        <button class="delete-user-btn" onclick="window.deleteUser('${u.id}', '${u.fullName}')">🗑️ حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+    } catch (e) { 
+        console.error('Load pending error:', e); 
+    }
+}
+
+// ============================================================
+// ADMIN - APPROVE/REJECT
+// ============================================================
+window.approveUser = async function(userId) {
+    if (!confirm('موافقة على هذا المستخدم؟')) return;
+    await updateDoc(doc(db, 'users', userId), { status: 'approved' });
+    showToast('✅ تمت الموافقة على المستخدم', 'success');
+    loadPendingUsers();
+};
+
+window.rejectUser = async function(userId) {
+    if (!confirm('رفض هذا المستخدم؟')) return;
+    await updateDoc(doc(db, 'users', userId), { status: 'rejected' });
+    showToast('❌ تم رفض المستخدم', 'error');
+    loadPendingUsers();
+};
+
+// ============================================================
+// STOCK ALERTS
+// ============================================================
+function getLowStockProducts() {
+    return products.filter(p => (p.quantity || 0) <= (p.reorderLevel || 3));
+}
+
+function renderStockAlerts() {
+    const container = document.getElementById('stockAlertsContainer');
+    if (!container) return;
+    
+    const lowStock = getLowStockProducts();
+    
+    if (lowStock.length === 0) {
+        container.innerHTML = `
+            <div class="stock-alert" style="background:#dcfce7;border-right-color:#22c55e;">
+                <span class="alert-text" style="color:#166534;">✅ ${getText('no_stock_alerts')}</span>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = lowStock.map(p => `
+        <div class="stock-alert danger" id="alert_${p.id}">
+            <span class="alert-text">
+                ⚠️ <strong>${p.name}</strong> - ${getText('product_needs_restock')} 
+                (المتبقي: ${p.quantity || 0} / الحد: ${p.reorderLevel || 3})
+            </span>
+            <div class="alert-action">
+                <button class="btn-restock" onclick="window.quickRestock('${p.id}')">${getText('restock_now')}</button>
+                <button class="btn-ignore" onclick="window.dismissAlert('${p.id}')">${getText('ignore')}</button>
+            </div>
+        </div>
+    `).join('');
+
+    document.querySelectorAll('.stock-alert.danger').forEach(el => {
+        el.classList.add('shake');
+    });
+}
+
+window.quickRestock = async function(productId) {
+    const p = products.find(x => x.id === productId);
+    if (!p) return;
+    
+    const newQty = prompt(`أدخل الكمية الجديدة للمنتج "${p.name}":`, (p.reorderLevel || 3) * 2);
+    if (newQty === null) return;
+    const qty = Number(newQty);
+    if (isNaN(qty) || qty < 0) return showToast('⚠️ كمية غير صحيحة', 'error');
+    
+    p.quantity = qty;
+    await updateDoc(doc(db, 'products', productId), { quantity: qty });
+    
+    displayProducts();
+    updateAll();
+    renderStockAlerts();
+    updateSaleProducts();
+    showToast(`✅ تم تحديث كمية ${p.name} إلى ${qty}`, 'success');
+};
+
+window.dismissAlert = function(productId) {
+    const alertEl = document.getElementById(`alert_${productId}`);
+    if (alertEl) {
+        alertEl.style.display = 'none';
+    }
+    if (!lowStockAlertIds.includes(productId)) {
+        lowStockAlertIds.push(productId);
+    }
+};
+
+// ============================================================
+// PRODUCTS
+// ============================================================
+window.addProduct = async function() {
+    const name = document.getElementById('productName').value.trim();
+    const category = document.getElementById('productCategory').value.trim();
+    const cost = Number(document.getElementById('productCost').value);
+    const price = Number(document.getElementById('productPrice').value);
+    const quantity = Number(document.getElementById('productQuantity').value);
+    const reorderLevel = Number(document.getElementById('productReorderLevel').value) || 3;
+    
+    if (!name || !price || quantity < 0) {
+        return showToast('⚠️ أدخل البيانات بشكل صحيح', 'error');
+    }
+    
+    const newDoc = { name, category, cost, price, quantity, reorderLevel, branch: STORE_ID };
+    const docRef = await addDoc(collection(db, 'products'), newDoc);
+    products.push({ id: docRef.id, ...newDoc });
+    
+    document.getElementById('productName').value = '';
+    document.getElementById('productCategory').value = '';
+    document.getElementById('productCost').value = '';
+    document.getElementById('productPrice').value = '';
+    document.getElementById('productQuantity').value = '';
+    document.getElementById('productReorderLevel').value = '3';
+    
+    displayProducts();
+    updateAll();
+    updateSaleProducts();
+    renderStockAlerts();
+    showToast('✅ تمت الإضافة', 'success');
+};
+
+// دالة عرض المنتجات - تم إزالة العمود الزائد
+window.displayProducts = function() {
+    const search = document.getElementById('productSearch').value.toLowerCase();
+    const table = document.getElementById('productsTable');
+    table.innerHTML = '';
+    
+    const filtered = products.filter(p => p.name.toLowerCase().includes(search));
+    if (filtered.length === 0) {
+        table.innerHTML = `<tr><td colspan="7" style="color:var(--gray-500);text-align:center;font-size:15px;padding:20px;">${getText('no_data')}</td></tr>`;
+        return;
+    }
+    
+    filtered.forEach(p => {
+        const qty = p.quantity || 0;
+        const isLow = qty <= (p.reorderLevel || 3);
+        table.innerHTML += `
+            <tr class="${isLow ? 'pulse-red' : ''}">
+                <td><input class="check productCheck" type="checkbox" value="${p.id}"></td>
+                <td><strong>${p.name}</strong></td>
+                <td>${p.category || '-'}</td>
+                <td>${(p.cost || 0).toLocaleString()}</td>
+                <td>${(p.price || 0).toLocaleString()}</td>
+                <td><span class="badge ${isLow ? 'badge-danger' : 'badge-info'}">${qty}</span></td>
+                <td>
+                    <button class="btn btn-primary" onclick="window.editProduct('${p.id}')" style="padding:4px 12px;font-size:13px;">✏️</button>
+                    <button class="btn btn-danger-red" onclick="window.deleteProduct('${p.id}')" style="padding:4px 12px;font-size:13px;">🗑️</button>
+                </td>
+            </tr>
+        `;
+    });
+};
+
+window.editProduct = function(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    editingId = id;
+    document.getElementById('editName').value = p.name;
+    document.getElementById('editCategory').value = p.category || '';
+    document.getElementById('editCost').value = p.cost || 0;
+    document.getElementById('editPrice').value = p.price || 0;
+    document.getElementById('editQuantity').value = p.quantity || 0;
+    document.getElementById('editReorderLevel').value = p.reorderLevel || 3;
+    document.getElementById('editModal').style.display = 'flex';
+};
+
+window.saveEdit = async function() {
+    if (!editingId) return;
+    const p = products.find(x => x.id === editingId);
+    if (!p) return;
+    p.name = document.getElementById('editName').value.trim();
+    p.category = document.getElementById('editCategory').value.trim();
+    p.cost = Number(document.getElementById('editCost').value);
+    p.price = Number(document.getElementById('editPrice').value);
+    p.quantity = Number(document.getElementById('editQuantity').value);
+    p.reorderLevel = Number(document.getElementById('editReorderLevel').value) || 3;
+    await updateDoc(doc(db, 'products', editingId), {
+        name: p.name, category: p.category, cost: p.cost,
+        price: p.price, quantity: p.quantity, reorderLevel: p.reorderLevel
+    });
+    closeModal();
+    displayProducts();
+    updateAll();
+    renderStockAlerts();
+    showToast('💾 تم التحديث', 'success');
+};
+
+window.closeModal = function() {
+    document.getElementById('editModal').style.display = 'none';
+    editingId = null;
+};
+
+window.deleteProduct = async function(id) {
+    if (!confirm('حذف المنتج؟')) return;
+    await deleteDoc(doc(db, 'products', id));
+    products = products.filter(p => p.id !== id);
+    displayProducts();
+    updateAll();
+    updateSaleProducts();
+    renderStockAlerts();
+    showToast('🗑️ تم الحذف', 'success');
+};
+
+window.deleteSelectedProducts = async function() {
+    const ids = [...document.querySelectorAll('.productCheck:checked')].map(x => x.value);
+    if (!ids.length) return showToast('⚠️ حدد منتجات', 'error');
+    if (!confirm(`حذف ${ids.length} منتج؟`)) return;
+    for (const id of ids) await deleteDoc(doc(db, 'products', id));
+    products = products.filter(p => !ids.includes(p.id));
+    displayProducts();
+    updateAll();
+    updateSaleProducts();
+    renderStockAlerts();
+    showToast('🗑️ تم الحذف', 'success');
+};
+
+window.restockSelectedProducts = async function() {
+    const ids = [...document.querySelectorAll('.productCheck:checked')].map(x => x.value);
+    if (!ids.length) return showToast('⚠️ حدد منتجات', 'error');
+    
+    const qty = prompt('أدخل الكمية الجديدة لجميع المنتجات المحددة:');
+    if (qty === null) return;
+    const newQty = Number(qty);
+    if (isNaN(newQty) || newQty < 0) return showToast('⚠️ كمية غير صحيحة', 'error');
+    
+    for (const id of ids) {
+        const p = products.find(x => x.id === id);
+        if (p) {
+            p.quantity = newQty;
+            await updateDoc(doc(db, 'products', id), { quantity: newQty });
+        }
+    }
+    displayProducts();
+    updateAll();
+    renderStockAlerts();
+    updateSaleProducts();
+    showToast(`✅ تم تحديث ${ids.length} منتج إلى ${newQty}`, 'success');
+};
+
+function updateSaleProducts() {
+    const el = document.getElementById('saleProduct');
+    if (!el) return;
+    el.innerHTML = products.map(p => `<option value="${p.id}">${p.name} (${p.quantity||0})</option>`).join('');
+}
+
+// ============================================================
+// SALES
+// ============================================================
+window.filterSales = function(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    filteredSales = sales.filter(s => {
+        const saleDate = new Date(s.date);
+        switch(filter) {
+            case 'day':
+                return saleDate >= startOfDay;
+            case 'week':
+                return saleDate >= startOfWeek;
+            case 'month':
+                return saleDate >= startOfMonth;
+            default:
+                return true;
+        }
+    });
+    
+    displaySales();
+};
+
+window.addToCart = function() {
+    const p = products.find(x => x.id == document.getElementById('saleProduct').value);
+    const q = Number(document.getElementById('saleQuantity').value);
+    if (!p) return showToast('⚠️ اختر منتجاً', 'error');
+    if (q > (p.quantity || 0)) return showToast(`⚠️ الكمية المتاحة: ${p.quantity}`, 'error');
+    const existing = cart.find(x => x.productId === p.id);
+    if (existing) {
+        existing.quantity += q;
+    } else {
+        cart.push({ productId: p.id, name: p.name, quantity: q, price: p.price, cost: p.cost || 0 });
+    }
+    displayCart();
+};
+
+function displayCart() {
+    const table = document.getElementById('cartTable');
+    const totalEl = document.getElementById('saleTotal');
+    if (!table || !totalEl) return;
+    table.innerHTML = '';
+    let total = 0;
+    cart.forEach((x, i) => {
+        const t = x.price * x.quantity;
+        total += t;
+        table.innerHTML += `
+            <tr>
+                <td>${x.name}</td>
+                <td>${x.quantity}</td>
+                <td>${x.price.toLocaleString()}</td>
+                <td>${t.toLocaleString()} د.ع</td>
+                <td><button class="btn btn-danger-red" onclick="cart.splice(${i},1);displayCart()" style="padding:3px 10px;font-size:13px;">🗑️</button></td>
+            </tr>
+        `;
+    });
+    totalEl.textContent = total.toLocaleString();
+}
+
+window.completeSale = async function() {
+    if (!cart.length) return showToast('⚠️ السلة فارغة', 'error');
+    let total = 0, profit = 0;
+    for (const x of cart) {
+        const p = products.find(y => y.id === x.productId);
+        if (!p) continue;
+        p.quantity = (p.quantity || 0) - x.quantity;
+        await updateDoc(doc(db, 'products', p.id), { quantity: p.quantity });
+        total += x.price * x.quantity;
+        profit += (x.price - (x.cost || 0)) * x.quantity;
+    }
+    const saleDoc = {
+        customer: document.getElementById('customerName').value.trim() || 'نقدي',
+        items: cart.map(x => ({ ...x })),
+        total, profit,
+        payment: document.getElementById('paymentMethod').value,
+        date: new Date().toISOString(),
+        branch: STORE_ID
+    };
+    const docRef = await addDoc(collection(db, 'sales'), saleDoc);
+    sales.push({ id: docRef.id, ...saleDoc });
+    cart = [];
+    document.getElementById('customerName').value = '';
+    displayCart();
+    displayProducts();
+    filterSales(currentFilter);
+    updateAll();
+    renderStockAlerts();
+    showToast('🎉 تمت الفاتورة', 'success');
+};
+
+function displaySales() {
+    const table = document.getElementById('salesTable');
+    if (!table) return;
+    table.innerHTML = '';
+    
+    const dataToShow = currentFilter === 'all' ? sales : filteredSales;
+    
+    if (!dataToShow.length) {
+        table.innerHTML = `<tr><td colspan="6" style="color:var(--gray-500);text-align:center;font-size:15px;padding:20px;">${getText('no_data')}</td></tr>`;
+        const latestTable = document.getElementById('latestSales');
+        if (latestTable) latestTable.innerHTML = `<tr><td colspan="4" style="color:var(--gray-500);text-align:center;font-size:15px;padding:20px;">${getText('no_data')}</td></tr>`;
+        return;
+    }
+    dataToShow.slice().reverse().forEach(s => {
+        table.innerHTML += `
+            <tr>
+                <td>#${s.id.substring(0,6)}</td>
+                <td>${s.customer}</td>
+                <td>${s.items.map(x => x.name).join(', ')}</td>
+                <td>${s.total.toLocaleString()} د.ع</td>
+                <td><span class="badge badge-info">${s.payment}</span></td>
+                <td style="font-size:12px;color:var(--gray-500);">${new Date(s.date).toLocaleDateString()}</td>
+            </tr>
+        `;
+    });
+    
+    const latestSales = sales.slice(-5).reverse();
+    const latestTable = document.getElementById('latestSales');
+    if (latestTable) {
+        if (latestSales.length === 0) {
+            latestTable.innerHTML = `<tr><td colspan="4" style="color:var(--gray-500);text-align:center;font-size:15px;padding:20px;">${getText('no_data')}</td></tr>`;
+        } else {
+            latestTable.innerHTML = latestSales.map(s => `
+                <tr>
+                    <td>${s.items.map(x => x.name).join(', ')}</td>
+                    <td>${s.customer}</td>
+                    <td>${s.items.reduce((sum, x) => sum + x.quantity, 0)}</td>
+                    <td>${s.total.toLocaleString()} د.ع</td>
+                </tr>
+            `).join('');
+        }
+    }
+}
+
+window.printInvoiceLog = function() {
+    const dataToShow = currentFilter === 'all' ? sales : filteredSales;
+    if (!dataToShow.length) return showToast('⚠️ لا توجد فواتير للطباعة', 'error');
+    
+    const printWindow = window.open('', '_blank', 'width=900,height=600');
+    let rows = '';
+    dataToShow.slice().reverse().forEach(s => {
+        rows += `
+            <tr>
+                <td style="padding:8px 12px;border:1px solid #ddd;">#${s.id.substring(0,6)}</td>
+                <td style="padding:8px 12px;border:1px solid #ddd;">${s.customer}</td>
+                <td style="padding:8px 12px;border:1px solid #ddd;">${s.items.map(x => x.name).join(', ')}</td>
+                <td style="padding:8px 12px;border:1px solid #ddd;text-align:left;">${s.total.toLocaleString()} د.ع</td>
+                <td style="padding:8px 12px;border:1px solid #ddd;">${s.payment}</td>
+                <td style="padding:8px 12px;border:1px solid #ddd;">${new Date(s.date).toLocaleDateString()}</td>
+            </tr>
+        `;
+    });
+    printWindow.document.write(`
+        <html><head><title>سجل الفواتير</title>
+        <style>
+            body{font-family:'Tajawal',sans-serif;padding:20px;}
+            h2{color:#2563eb;border-bottom:2px solid #2563eb;padding-bottom:8px;}
+            table{width:100%;border-collapse:collapse;margin-top:12px;}
+            th{background:#f1f5f9;padding:10px;border:1px solid #ddd;text-align:center;font-size:14px;}
+            td{padding:8px 12px;border:1px solid #ddd;font-size:14px;}
+        </style>
+        </head><body>
+        <h2>📋 سجل الفواتير - أدشوب</h2>
+        <p style="font-size:14px;">التاريخ: ${new Date().toLocaleDateString()}</p>
+        ${currentFilter !== 'all' ? `<p style="font-size:14px;color:var(--gray-500);">فلتر: ${getText('filter_' + currentFilter)}</p>` : ''}
+        <table>
+            <thead><tr><th>#</th><th>العميل</th><th>المنتجات</th><th>المبلغ</th><th>الدفع</th><th>التاريخ</th></tr></thead>
+            <tbody>${rows}</tbody>
+        </table>
+        </body></html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+};
+
+// ============================================================
+// CUSTOMERS
+// ============================================================
+window.addCustomer = async function() {
+    const name = document.getElementById('customerInput').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+    if (!name) return showToast('⚠️ أدخل الاسم', 'error');
+    const newCust = { name, phone, branch: STORE_ID };
+    const docRef = await addDoc(collection(db, 'customers'), newCust);
+    customers.push({ id: docRef.id, ...newCust });
+    document.getElementById('customerInput').value = '';
+    document.getElementById('customerPhone').value = '';
+    displayCustomers();
+    showToast('👥 تمت الإضافة', 'success');
+};
+
+function displayCustomers() {
+    const table = document.getElementById('customersTable');
+    if (!table) return;
+    table.innerHTML = '';
+    if (!customers.length) {
+        table.innerHTML = `<tr><td colspan="4" style="color:var(--gray-500);text-align:center;font-size:15px;padding:20px;">${getText('no_data')}</td></tr>`;
+        return;
+    }
+    customers.forEach(c => {
+        table.innerHTML += `
+            <tr>
+                <td><input class="check customerCheck" type="checkbox" value="${c.id}"></td>
+                <td>${c.name}</td>
+                <td>${c.phone || '-'}</td>
+                <td><button class="btn btn-danger-red" onclick="window.deleteCustomer('${c.id}')" style="padding:4px 12px;font-size:13px;">🗑️</button></td>
+            </tr>
+        `;
+    });
+}
+
+window.deleteCustomer = async function(id) {
+    if (!confirm('حذف العميل؟')) return;
+    await deleteDoc(doc(db, 'customers', id));
+    customers = customers.filter(c => c.id !== id);
+    displayCustomers();
+    showToast('🗑️ تم الحذف', 'success');
+};
+
+window.deleteSelectedCustomers = async function() {
+    const ids = [...document.querySelectorAll('.customerCheck:checked')].map(x => x.value);
+    if (!ids.length) return showToast('⚠️ حدد عملاء', 'error');
+    if (!confirm(`حذف ${ids.length} عميل؟`)) return;
+    for (const id of ids) await deleteDoc(doc(db, 'customers', id));
+    customers = customers.filter(c => !ids.includes(c.id));
+    displayCustomers();
+    showToast('🗑️ تم الحذف', 'success');
+};
+
+// ============================================================
+// EXPENSES
+// ============================================================
+window.addExpense = async function() {
+    const name = document.getElementById('expenseName').value.trim();
+    const amount = Number(document.getElementById('expenseAmount').value);
+    if (!name || !amount) return showToast('⚠️ أدخل البيانات', 'error');
+    const newExp = { name, amount, branch: STORE_ID, date: new Date().toISOString() };
+    const docRef = await addDoc(collection(db, 'expenses'), newExp);
+    expenses.push({ id: docRef.id, ...newExp });
+    document.getElementById('expenseName').value = '';
+    document.getElementById('expenseAmount').value = '';
+    displayExpenses();
+    updateAll();
+    showToast('💰 تم التسجيل', 'success');
+};
+
+function displayExpenses() {
+    const table = document.getElementById('expensesTable');
+    if (!table) return;
+    table.innerHTML = '';
+    if (!expenses.length) {
+        table.innerHTML = `<tr><td colspan="4" style="color:var(--gray-500);text-align:center;font-size:15px;padding:20px;">${getText('no_data')}</td></tr>`;
+        return;
+    }
+    expenses.forEach(e => {
+        table.innerHTML += `
+            <tr>
+                <td><input class="check expenseCheck" type="checkbox" value="${e.id}"></td>
+                <td>${e.name}</td>
+                <td>${e.amount.toLocaleString()} د.ع</td>
+                <td><button class="btn btn-danger-red" onclick="window.deleteExpense('${e.id}')" style="padding:4px 12px;font-size:13px;">🗑️</button></td>
+            </tr>
+        `;
+    });
+}
+
+window.deleteExpense = async function(id) {
+    if (!confirm('حذف المصروف؟')) return;
+    await deleteDoc(doc(db, 'expenses', id));
+    expenses = expenses.filter(e => e.id !== id);
+    displayExpenses();
+    updateAll();
+    showToast('🗑️ تم الحذف', 'success');
+};
+
+window.deleteSelectedExpenses = async function() {
+    const ids = [...document.querySelectorAll('.expenseCheck:checked')].map(x => x.value);
+    if (!ids.length) return showToast('⚠️ حدد مصروفات', 'error');
+    if (!confirm(`حذف ${ids.length} مصروف؟`)) return;
+    for (const id of ids) await deleteDoc(doc(db, 'expenses', id));
+    expenses = expenses.filter(e => !ids.includes(e.id));
+    displayExpenses();
+    updateAll();
+    showToast('🗑️ تم الحذف', 'success');
+};
+
+// ============================================================
+// UPDATE
+// ============================================================
+function updateAll() {
+    const stockValue = products.reduce((acc, p) => acc + ((p.cost || 0) * (p.quantity || 0)), 0);
+    const totalSales = sales.reduce((acc, s) => acc + s.total, 0);
+    const totalExpenses = expenses.reduce((acc, e) => acc + e.amount, 0);
+    const totalProfit = sales.reduce((acc, s) => acc + (s.profit || 0), 0) - totalExpenses;
+
+    document.getElementById('dashProducts').textContent = products.length;
+    document.getElementById('dashStock').textContent = stockValue.toLocaleString() + ' د.ع';
+    document.getElementById('dashSales').textContent = totalSales.toLocaleString() + ' د.ع';
+    document.getElementById('dashProfit').textContent = totalProfit.toLocaleString() + ' د.ع';
+
+    document.getElementById('reportSales').textContent = totalSales.toLocaleString() + ' د.ع';
+    document.getElementById('reportCost').textContent = sales.reduce((acc, s) => acc + (s.items?.reduce((iAcc, item) => iAcc + (item.cost || 0) * item.quantity, 0) || 0), 0).toLocaleString() + ' د.ع';
+    document.getElementById('reportExpenses').textContent = totalExpenses.toLocaleString() + ' د.ع';
+    document.getElementById('reportProfit').textContent = totalProfit.toLocaleString() + ' د.ع';
+
+    const lowStock = products.filter(p => (p.quantity || 0) < (p.reorderLevel || 3));
+    const box = document.getElementById('lowStockBox');
+    const table = document.getElementById('lowStockTable');
+    if (box && table) {
+        if (lowStock.length > 0) {
+            box.style.display = 'block';
+            table.innerHTML = lowStock.map(p => `
+                <tr>
+                    <td>${p.name}</td>
+                    <td><span class="badge badge-danger">${p.quantity}</span></td>
+                    <td>
+                        <button class="btn btn-warning" onclick="window.quickRestock('${p.id}')" style="padding:4px 12px;font-size:13px;">📦 ${getText('restock_now')}</button>
+                    </td>
+                </tr>
+            `).join('');
+        } else {
+            box.style.display = 'none';
+        }
+    }
+}
+
+// ============================================================
+// PRINT REPORT
+// ============================================================
+window.printReport = function() {
+    const stockValue = products.reduce((acc, p) => acc + ((p.cost || 0) * (p.quantity || 0)), 0);
+    const totalSales = sales.reduce((acc, s) => acc + s.total, 0);
+    const totalExpenses = expenses.reduce((acc, e) => acc + e.amount, 0);
+    const totalCost = sales.reduce((acc, s) => acc + (s.items?.reduce((iAcc, item) => iAcc + (item.cost || 0) * item.quantity, 0) || 0), 0);
+    const totalProfit = sales.reduce((acc, s) => acc + (s.profit || 0), 0) - totalExpenses;
+    
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    printWindow.document.write(`
+        <html><head><title>تقرير أدشوب</title>
+        <style>
+            body{font-family:'Tajawal',sans-serif;padding:20px;}
+            h2{color:#2563eb;border-bottom:2px solid #2563eb;padding-bottom:8px;font-size:24px;}
+            p{font-size:14px;}
+            .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+            .card{background:#f8fafc;padding:16px;border-radius:8px;border:1px solid #e2e8f0;}
+            .card .label{color:#64748b;font-size:12px;text-transform:uppercase;}
+            .card .value{font-size:24px;font-weight:700;color:#2563eb;}
+        </style>
+        </head><body>
+        <h2>📈 تقرير أدشوب</h2>
+        <p style="font-size:14px;">${new Date().toLocaleDateString()} - ${currentUser?.storeName || ''}</p>
+        <div class="grid">
+            <div class="card"><div class="label">إجمالي المبيعات</div><div class="value">${totalSales.toLocaleString()} د.ع</div></div>
+            <div class="card"><div class="label">تكلفة البضاعة</div><div class="value" style="color:var(--gray-600);">${totalCost.toLocaleString()} د.ع</div></div>
+            <div class="card"><div class="label">المصروفات</div><div class="value" style="color:var(--gray-600);">${totalExpenses.toLocaleString()} د.ع</div></div>
+            <div class="card"><div class="label">صافي الأرباح</div><div class="value">${totalProfit.toLocaleString()} د.ع</div></div>
+            <div class="card"><div class="label">عدد المنتجات</div><div class="value">${products.length}</div></div>
+            <div class="card"><div class="label">قيمة المخزون</div><div class="value" style="color:var(--gray-600);">${stockValue.toLocaleString()} د.ع</div></div>
+        </div>
+        </body></html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+};
+
+// ============================================================
+// DATA
+// ============================================================
+async function loadData() {
+    try {
+        const [pSnap, sSnap, cSnap, eSnap] = await Promise.all([
+            getDocs(query(collection(db, 'products'), where('branch', '==', STORE_ID))),
+            getDocs(query(collection(db, 'sales'), where('branch', '==', STORE_ID))),
+            getDocs(query(collection(db, 'customers'), where('branch', '==', STORE_ID))),
+            getDocs(query(collection(db, 'expenses'), where('branch', '==', STORE_ID)))
+        ]);
+        products = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        sales = sSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        customers = cSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        expenses = eSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        
+        displayProducts();
+        filterSales(currentFilter);
+        displayCustomers();
+        displayExpenses();
+        updateAll();
+        updateSaleProducts();
+        renderStockAlerts();
+    } catch (e) {
+        console.error('Load data error:', e);
+        showToast('⚠️ حدث خطأ في تحميل البيانات', 'error');
+    }
+}
+
+// ============================================================
+// AUTO LOGIN
+// ============================================================
+async function checkAutoLogin() {
+    const userId = localStorage.getItem('adshop_user_id');
+    if (!userId) return;
+    try {
+        const docSnap = await getDoc(doc(db, 'users', userId));
+        if (!docSnap.exists()) return;
+        const user = { id: docSnap.id, ...docSnap.data() };
+        if (user.status !== 'approved') {
+            localStorage.removeItem('adshop_user_id');
+            return;
+        }
+        currentUser = user;
+        STORE_ID = user.branch;
+        document.getElementById('authContainer').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('userName').textContent = user.fullName;
+        document.getElementById('userAvatar').textContent = user.fullName.charAt(0);
+        document.getElementById('statusBadge').textContent = '✅ ' + getText('active');
+        
+        const isAdmin = user.email === SUPER_ADMIN_EMAIL || user.role === 'admin';
+        document.getElementById('adminBadge').style.display = isAdmin ? 'inline' : 'none';
+        document.getElementById('adminNavBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+        
+        if (isAdmin) {
+            loadPendingUsers();
+        }
+        await loadData();
+        updateUITexts();
+        renderStockAlerts();
+    } catch (e) {
+        console.error('Auto-login error:', e);
+    }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadLanguage();
+loadTheme();
+checkAutoLogin();
+
+// تحديث التنبيهات كل 30 ثانية
+setInterval(() => {
+    if (currentUser) {
+        renderStockAlerts();
+    }
+}, 30000);
+
+// جعل الدوال متاحة عالمياً
+window.showPage = showPage;
+window.setLanguage = setLanguage;
+window.toggleTheme = toggleTheme;
+window.handleLogin = handleLogin;
+window.handleRegister = handleRegister;
+window.showRegister = showRegister;
+window.showLogin = showLogin;
+window.checkStatus = checkStatus;
+window.logout = logout;
+window.approveUser = approveUser;
+window.rejectUser = rejectUser;
+window.deleteUser = deleteUser;
+window.quickRestock = quickRestock;
+window.dismissAlert = dismissAlert;
+window.addProduct = addProduct;
+window.displayProducts = displayProducts;
+window.editProduct = editProduct;
+window.saveEdit = saveEdit;
+window.closeModal = closeModal;
+window.deleteProduct = deleteProduct;
+window.deleteSelectedProducts = deleteSelectedProducts;
+window.restockSelectedProducts = restockSelectedProducts;
+window.addToCart = addToCart;
+window.completeSale = completeSale;
+window.printInvoiceLog = printInvoiceLog;
+window.addCustomer = addCustomer;
+window.deleteCustomer = deleteCustomer;
+window.deleteSelectedCustomers = deleteSelectedCustomers;
+window.addExpense = addExpense;
+window.deleteExpense = deleteExpense;
+window.deleteSelectedExpenses = deleteSelectedExpenses;
+window.printReport = printReport;
+window.filterSales = filterSales;
+</script>
+</body>
+</html>
