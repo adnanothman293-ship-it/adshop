@@ -1,10 +1,31 @@
-self.addEventListener("install", (event) => {
-  console.log("Service Worker Installed");
+// SUMER - Service Worker بسيط لدعم التثبيت وتحسين الأداء (لا يعمل أوفلاين كاملاً لأن البيانات من Supabase)
+const CACHE_NAME = 'sumer-shell-v1';
+const SHELL_FILES = [
+  './',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL_FILES)).catch(() => {})
+  );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", (event) => {
-  console.log("Service Worker Activated");
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {});
+self.addEventListener('fetch', (event) => {
+  // شبكة أولاً دائماً (لأن البيانات حية من Supabase)، مع رجوع للكاش فقط لو فشل الاتصال
+  event.respondWith(
+    fetch(event.request).catch(() => caches.match(event.request))
+  );
+});
